@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Refit;
 using Shared;
 using Shared.Models;
 
@@ -26,24 +27,32 @@ public class BooksController(IServiceProvider serviceProvider)
     {
         return StoreDb.BooksByAuthorId(authorId);
     }
-    
+
     [HttpPost]
     public Book AddBook([FromBody] BookDto book)
     {
         return StoreDb.AddBook(book);
     }
-    
+
     [HttpPut("{id}")]
     public Book EditBook(int id, [FromBody] BookDto book)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(id);
         ArgumentNullException.ThrowIfNull(nameof(book));
-        return StoreDb.EditBook(id,book);
+        return StoreDb.EditBook(id, book);
     }
-    
+
     [HttpDelete("{id}")]
     public void DeleteBookById(int id)
     {
-         StoreDb.DeleteBook(id);
+        StoreDb.DeleteBook(id);
+    }
+
+    [HttpGet("/weather")]
+    public async Task<IActionResult> Weather()
+    {
+        var weatherService = RestService.For<IWeatherRestApi>("http://localhost:5180");
+        var result =await  weatherService.Weather();
+         return  Ok(result);
     }
 }

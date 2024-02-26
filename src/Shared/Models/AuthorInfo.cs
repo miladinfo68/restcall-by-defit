@@ -12,3 +12,13 @@ public  record AuthorDto( string Code, string Name);
 public record BookInfo(int BookId, string BookCode, string BookName, int AuthorId, string AuthorName);
 
 public record AuthorInfo(int AuthorId, string AuthorCode, string AuthorName, IEnumerable<BookResponseDto> Books);
+
+
+
+
+//-------------------------
+
+public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+{
+    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+}
